@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <RegisterForComInterop>true</RegisterForComInterop>
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -31,7 +32,6 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -44,8 +44,8 @@
     <Compile Include="Properties\AssemblyInfo_EtokenExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\pkcs11Wrapper\Pkcs11Net.csproj">
-      <Project>{3845DF22-E6C6-482D-B38C-45C3B92FA5B7}</Project>
+    <ProjectReference Include="Pkcs11Net.csproj">
+      <Project>{3845df22-e6c6-482d-b38c-45c3b92fa5b7}</Project>
       <Name>Pkcs11Net</Name>
     </ProjectReference>
   </ItemGroup>

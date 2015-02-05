@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{D8BC1726-19E0-4CFE-A306-5C194315E0D8}</ProjectGuid>
@@ -14,8 +14,7 @@
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,9 +22,10 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <RegisterForComInterop>true</RegisterForComInterop>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -87,16 +87,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Pkcs11Net.csproj">
-      <Project>{3845DF22-E6C6-482D-B38C-45C3B92FA5B7}</Project>
-      <Name>Pkcs11Net</Name>
-    </ProjectReference>
-    <ProjectReference Include="Pkcs11NetEtokenExtensions.csproj">
-      <Project>{6DFB1374-9BAE-4AD3-A160-EEF7CFDF6162}</Project>
-      <Name>Pkcs11NetEtokenExtensions</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="TestsApplication\eTPKCS11g.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -104,6 +94,16 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestsApplication\rtPKCS11.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Pkcs11Net.csproj">
+      <Project>{3845df22-e6c6-482d-b38c-45c3b92fa5b7}</Project>
+      <Name>Pkcs11Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="Pkcs11NetEtokenExtensions.csproj">
+      <Project>{6dfb1374-9bae-4ad3-a160-eef7cfdf6162}</Project>
+      <Name>Pkcs11NetEtokenExtensions</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
