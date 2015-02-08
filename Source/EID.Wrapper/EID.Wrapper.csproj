@@ -32,11 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>EID.Wrapper.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -88,16 +87,139 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CardData.cs" />
+    <Compile Include="EtokenExtensions\EtokenDelegates.cs" />
+    <Compile Include="EtokenExtensions\EtokenDelegateUtil.cs" />
+    <Compile Include="EtokenExtensions\EtokenModule.cs" />
+    <Compile Include="EtokenExtensions\EtokenPkcs11Module.cs" />
     <Compile Include="ICardData.cs" />
     <Compile Include="IWrapper.cs" />
+    <Compile Include="Pkcs11\Delegates\C_CloseAllSessions.cs" />
+    <Compile Include="Pkcs11\Delegates\C_CloseSession.cs" />
+    <Compile Include="Pkcs11\Delegates\C_CopyObject.cs" />
+    <Compile Include="Pkcs11\Delegates\C_CreateObject.cs" />
+    <Compile Include="Pkcs11\Delegates\C_Decrypt.cs" />
+    <Compile Include="Pkcs11\Delegates\C_DecryptFinal.cs" />
+    <Compile Include="Pkcs11\Delegates\C_DecryptInit.cs" />
+    <Compile Include="Pkcs11\Delegates\C_DecryptUpdate.cs" />
+    <Compile Include="Pkcs11\Delegates\C_DestroyObject.cs" />
+    <Compile Include="Pkcs11\Delegates\C_Digest.cs" />
+    <Compile Include="Pkcs11\Delegates\C_DigestFinal.cs" />
+    <Compile Include="Pkcs11\Delegates\C_DigestInit.cs" />
+    <Compile Include="Pkcs11\Delegates\C_DigestKey.cs" />
+    <Compile Include="Pkcs11\Delegates\C_DigestUpdate.cs" />
+    <Compile Include="Pkcs11\Delegates\C_Encrypt.cs" />
+    <Compile Include="Pkcs11\Delegates\C_EncryptFinal.cs" />
+    <Compile Include="Pkcs11\Delegates\C_EncryptInit.cs" />
+    <Compile Include="Pkcs11\Delegates\C_EncryptUpdate.cs" />
+    <Compile Include="Pkcs11\Delegates\C_Finalize.cs" />
+    <Compile Include="Pkcs11\Delegates\C_FindObjects.cs" />
+    <Compile Include="Pkcs11\Delegates\C_FindObjectsFinal.cs" />
+    <Compile Include="Pkcs11\Delegates\C_FindObjectsInit.cs" />
+    <Compile Include="Pkcs11\Delegates\C_GenerateKey.cs" />
+    <Compile Include="Pkcs11\Delegates\C_GenerateKeyPair.cs" />
+    <Compile Include="Pkcs11\Delegates\C_GetAttributeValue.cs" />
+    <Compile Include="Pkcs11\Delegates\C_GetFunctionList.cs" />
+    <Compile Include="Pkcs11\Delegates\C_GetInfo.cs" />
+    <Compile Include="Pkcs11\Delegates\C_GetMechanismInfo.cs" />
+    <Compile Include="Pkcs11\Delegates\C_GetMechanismList.cs" />
+    <Compile Include="Pkcs11\Delegates\C_GetObjectSize.cs" />
+    <Compile Include="Pkcs11\Delegates\C_GetOperationState.cs" />
+    <Compile Include="Pkcs11\Delegates\C_GetSessionInfo.cs" />
+    <Compile Include="Pkcs11\Delegates\C_GetSlotInfo.cs" />
+    <Compile Include="Pkcs11\Delegates\C_GetSlotList.cs" />
+    <Compile Include="Pkcs11\Delegates\C_GetTokenInfo.cs" />
+    <Compile Include="Pkcs11\Delegates\C_Initialize.cs" />
+    <Compile Include="Pkcs11\Delegates\C_InitPIN.cs" />
+    <Compile Include="Pkcs11\Delegates\C_InitToken.cs" />
+    <Compile Include="Pkcs11\Delegates\C_Login.cs" />
+    <Compile Include="Pkcs11\Delegates\C_Logout.cs" />
+    <Compile Include="Pkcs11\Delegates\C_OpenSession.cs" />
+    <Compile Include="Pkcs11\Delegates\C_SetAttributeValue.cs" />
+    <Compile Include="Pkcs11\Delegates\C_SetOperationState.cs" />
+    <Compile Include="Pkcs11\Delegates\C_SetPIN.cs" />
+    <Compile Include="Pkcs11\Delegates\C_Sign.cs" />
+    <Compile Include="Pkcs11\Delegates\C_SignFinal.cs" />
+    <Compile Include="Pkcs11\Delegates\C_SignInit.cs" />
+    <Compile Include="Pkcs11\Delegates\C_SignRecoverInit.cs" />
+    <Compile Include="Pkcs11\Delegates\C_SignUpdate.cs" />
+    <Compile Include="Pkcs11\Delegates\C_Verify.cs" />
+    <Compile Include="Pkcs11\Delegates\C_VerifyFinal.cs" />
+    <Compile Include="Pkcs11\Delegates\C_VerifyInit.cs" />
+    <Compile Include="Pkcs11\Delegates\C_VerifyUpdate.cs" />
+    <Compile Include="Pkcs11\Delegates\C_WaitForSlotEvent.cs" />
+    <Compile Include="Pkcs11\Info.cs" />
+    <Compile Include="Pkcs11\KeyPair.cs" />
+    <Compile Include="Pkcs11\MechanismInfo.cs" />
+    <Compile Include="Pkcs11\Module.cs" />
+    <Compile Include="Pkcs11\Objects\BooleanAttribute.cs" />
+    <Compile Include="Pkcs11\Objects\ByteArrayAttribute.cs" />
+    <Compile Include="Pkcs11\Objects\Certificate.cs" />
+    <Compile Include="Pkcs11\Objects\CertificateTypeAttribute.cs" />
+    <Compile Include="Pkcs11\Objects\CharArrayAttribute.cs" />
+    <Compile Include="Pkcs11\Objects\Data.cs" />
+    <Compile Include="Pkcs11\Objects\DateAttribute.cs" />
+    <Compile Include="Pkcs11\Objects\Des2SecretKey.cs" />
+    <Compile Include="Pkcs11\Objects\Des3SecretKey.cs" />
+    <Compile Include="Pkcs11\Objects\DesSecretKey.cs" />
+    <Compile Include="Pkcs11\Objects\DomainParameters.cs" />
+    <Compile Include="Pkcs11\Objects\GostPrivateKey.cs" />
+    <Compile Include="Pkcs11\Objects\GostPublicKey.cs" />
+    <Compile Include="Pkcs11\Objects\HardwareFeature.cs" />
+    <Compile Include="Pkcs11\Objects\Key.cs" />
+    <Compile Include="Pkcs11\Objects\KeyTypeAttribute.cs" />
+    <Compile Include="Pkcs11\Objects\Mechanism.cs" />
+    <Compile Include="Pkcs11\Objects\MechanismTypeAttribute.cs" />
+    <Compile Include="Pkcs11\Objects\MetaData.cs" />
+    <Compile Include="Pkcs11\Objects\ObjectClassAttribute.cs" />
+    <Compile Include="Pkcs11\Objects\P11Attribute.cs" />
+    <Compile Include="Pkcs11\Objects\P11Object.cs" />
+    <Compile Include="Pkcs11\Objects\PrivateKey.cs" />
+    <Compile Include="Pkcs11\Objects\PublicKey.cs" />
+    <Compile Include="Pkcs11\Objects\RSAPrivateKey.cs" />
+    <Compile Include="Pkcs11\Objects\RSAPublicKey.cs" />
+    <Compile Include="Pkcs11\Objects\SecretKey.cs" />
+    <Compile Include="Pkcs11\Objects\Storage.cs" />
+    <Compile Include="Pkcs11\Objects\UIntAttribute.cs" />
+    <Compile Include="Pkcs11\Objects\X509AttributeCertificate.cs" />
+    <Compile Include="Pkcs11\Objects\X509PublicKeyCertificate.cs" />
+    <Compile Include="Pkcs11\P11Util.cs" />
+    <Compile Include="Pkcs11\Params\Parameters.cs" />
+    <Compile Include="Pkcs11\Session.cs" />
+    <Compile Include="Pkcs11\Slot.cs" />
+    <Compile Include="Pkcs11\SlotInfo.cs" />
+    <Compile Include="Pkcs11\Token.cs" />
+    <Compile Include="Pkcs11\TokenException.cs" />
+    <Compile Include="Pkcs11\TokenInfo.cs" />
+    <Compile Include="Pkcs11\UserType.cs" />
+    <Compile Include="Pkcs11\Version.cs" />
+    <Compile Include="Pkcs11\Wrapper\AttributeUtil.cs" />
+    <Compile Include="Pkcs11\Wrapper\CKA.cs" />
+    <Compile Include="Pkcs11\Wrapper\CKC.cs" />
+    <Compile Include="Pkcs11\Wrapper\CKK.cs" />
+    <Compile Include="Pkcs11\Wrapper\CKM.cs" />
+    <Compile Include="Pkcs11\Wrapper\CKO.cs" />
+    <Compile Include="Pkcs11\Wrapper\CKR.cs" />
+    <Compile Include="Pkcs11\Wrapper\CKU.cs" />
+    <Compile Include="Pkcs11\Wrapper\CK_ATTRIBUTE.cs" />
+    <Compile Include="Pkcs11\Wrapper\CK_DATE.cs" />
+    <Compile Include="Pkcs11\Wrapper\CK_FUNCTION_LIST.cs" />
+    <Compile Include="Pkcs11\Wrapper\CK_INFO.cs" />
+    <Compile Include="Pkcs11\Wrapper\CK_MECHANISM.cs" />
+    <Compile Include="Pkcs11\Wrapper\CK_MECHANISM_INFO.cs" />
+    <Compile Include="Pkcs11\Wrapper\CK_SESSION_INFO.cs" />
+    <Compile Include="Pkcs11\Wrapper\CK_SLOT_INFO.cs" />
+    <Compile Include="Pkcs11\Wrapper\CK_TOKEN_INFO.cs" />
+    <Compile Include="Pkcs11\Wrapper\CK_VERSION.cs" />
+    <Compile Include="Pkcs11\Wrapper\DelegateUtil.cs" />
+    <Compile Include="Pkcs11\Wrapper\KernelUtil.cs" />
+    <Compile Include="Pkcs11\Wrapper\KeyPairHandler.cs" />
+    <Compile Include="Pkcs11\Wrapper\PKCS11Constants.cs" />
+    <Compile Include="Pkcs11\Wrapper\Pkcs11Module.cs" />
     <Compile Include="Wrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\pkcs11Wrapper\Pkcs11Net.csproj">
-      <Project>{3845df22-e6c6-482d-b38c-45c3b92fa5b7}</Project>
-      <Name>Pkcs11Net</Name>
-    </ProjectReference>
+    <None Include="EID.Wrapper.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
