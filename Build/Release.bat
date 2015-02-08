@@ -1,0 +1,2 @@
+msbuild ../Source/EID.Wrapper.sln /p:Configuration=Release /p:Platform=x64 /p:DebugSymbols=false /p:DebugType=None
+msbuild ../Source/EID.Wrapper.sln /p:Configuration=Release /p:Platform=x86 /p:DebugSymbols=false /p:DebugType=None
