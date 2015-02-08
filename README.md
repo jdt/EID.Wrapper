@@ -5,6 +5,8 @@ A COM Wrapper for the Belgian EID to allow legacy VBA to access the EID card dat
 This DLL depends on Framework 4.0 and will obviously need the EID Middleware installed on the system.
 
 ## Installation
+The files necessary for the wrapper can be found in the Release.zip-file. Download this file from the repository and perform the installation as outlined below to make the wrapper available on your system. After registering the DLL you may remove the downloaded files as the Register-utility will copy the necessary files to the system-directories.
+
 The version of the DLL that needs to be installed depends on the version of Office used, NOT the OS. For users of a 32-bit Office, you need the x86 folder. If you are using a 64-bit Office, use the x64 folder. The wrapper provides a simple Register-utility that can be run as Administrator and performs the steps needed to get the wrapper DLL itself registered and recognized, after which it can be referenced from the Visual Basic For Applications-editor.
 
 Remember that if you are using a 64-bit OS with a 32-bit version of Office you will STILL need the 32-bit DLL. 
