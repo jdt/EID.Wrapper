@@ -21,6 +21,7 @@ Dim data As EID_Wrapper.CardData
 Set data = wrapper.GetCardData()
 ' Display the surname
 MsgBox (data.Surname)
+```
 
 ## Help
 
