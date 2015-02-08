@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EID.Wrapper", "EID.Wrapper\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EID.Wrapper.Console", "EID.Wrapper.Console\EID.Wrapper.Console.csproj", "{09AF51D8-4326-4DF2-BACF-E987634A551C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EID.Wrapper.Install", "EID.Wrapper.Install\EID.Wrapper.Install.csproj", "{D07D2BDA-155A-49B6-9231-86E7DB17FB7A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EID.Wrapper.Register", "EID.Wrapper.Install\EID.Wrapper.Register.csproj", "{D07D2BDA-155A-49B6-9231-86E7DB17FB7A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

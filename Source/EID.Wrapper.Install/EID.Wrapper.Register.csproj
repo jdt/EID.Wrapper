@@ -7,8 +7,8 @@
     <ProjectGuid>{D07D2BDA-155A-49B6-9231-86E7DB17FB7A}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EID.Wrapper.Install</RootNamespace>
-    <AssemblyName>EID.Wrapper.Install</AssemblyName>
+    <RootNamespace>EID.Wrapper.Register</RootNamespace>
+    <AssemblyName>EID.Wrapper.Register</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
