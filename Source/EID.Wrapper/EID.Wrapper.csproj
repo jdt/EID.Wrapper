@@ -88,6 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CardData.cs" />
+    <Compile Include="CardStatus.cs" />
     <Compile Include="EtokenExtensions\EtokenDelegates.cs" />
     <Compile Include="EtokenExtensions\EtokenDelegateUtil.cs" />
     <Compile Include="EtokenExtensions\EtokenModule.cs" />

@@ -11,6 +11,11 @@ The version of the DLL that needs to be installed depends on the version of Offi
 
 Remember that if you are using a 64-bit OS with a 32-bit version of Office you will STILL need the 32-bit DLL. 
 
+## Updating
+If you want to register a new version, simply download it and call the Register-utility again. After that, remove and re-add the reference to the wrapper from the Visual Basic For Applications-editor by unchecking the reference 
+from the Tools/References... screen, closing the screen and then re-adding it. If you distribute a new version of the wrapper to clients you must also distribute a new version of the application that depends on the wrapper where
+the reference has been re-added.
+
 ## Usage
 After installation a reference to EID_Wrapper is available from the Tools/References... dialog in the Visual Basic For Applications editor. The following code can then be used to fetch data from the EID-card.
 
@@ -32,7 +37,7 @@ The wrapper provides an EID.Wrapper.Console-utility that can be used to verify i
 This is a quick-and-dirty project that only exposes the data I need to get an old application going with the new cards being issued. If you need additional data, open an issue or fork this project and send me a pull request and I'll see if I can get you the data you need.
 
 ### I keep getting weird exceptions!
-A lot of weird exceptions can pop up when the version of the DLL and the version of Office (32-bit versus 64-bit) do not match. If you encounter any errors, make sure that you have installed the correct DLL (x86 for 32-bit Office or x64 for 64-bit Office).
+A lot of weird exceptions can pop up when the version of the DLL and the version of Office (32-bit versus 64-bit) do not match. If you encounter any errors, make sure that you have installed the correct DLL (x86 for 32-bit Office or x64 for 64-bit Office). If you have recently updated the wrapper, make sure to follow the instructions outlined in the 'Updating'-section.
 
 ### I'm still stuck!
 This DLL has been tested on different combinations of OS and Office and always from clean installations (that is, apart from installing the .NET Framework version 4, the EID Middleware and the Java JRE to test the basic Viewer-applet). Despite my best efforts there can still be some problems. If you are well and truly stuck with a problem you are welcome to open an issue and we can see about working it out, but I can and will not make any guarantees that this DLL will work for you.
@@ -50,6 +55,9 @@ uint slotID
 );
 
 4.2) A second change might also be needed to pkcs11net, as some of its pkcs11 structs do not have their alignment set to 1. We (beidpkcs11.dll) package the pkcs11 structs with 1-byte alignment, but the pkcs11net wrapper uses the default. How to change the alignment of the pkcs11net wrapper structs: e.g. for the CK_ATTRIBUTE struct: in CK_ATTRIBUTE.cs change [StructLayout(LayoutKind.Sequential,Charset.Unicode)] to [StructLayout(LayoutKind.Sequential,Charset.Unicode,Pack=1)]
+
+## Building
+In order to create a release, simply call the Build\Release.bat-script from a Visual Studio Command Prompt. 
 
 ## A note for developers
 If you want to develop and test the wrapper, you might need to re-check the "Register for COM interop" in the Build-section of the EID.Wrapper project properties if you are doing Release builds. The regasm tool will generate the .tlb file needed on the client systems so a Release build from Visual Studio does not create and register the DLL.

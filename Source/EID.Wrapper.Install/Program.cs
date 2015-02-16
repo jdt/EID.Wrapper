@@ -21,14 +21,16 @@ namespace EID.Wrapper.Register
             var tlb = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.SystemX86), "EID.Wrapper.tlb");
 
             var regasm = Path.Combine(System.Runtime.InteropServices.RuntimeEnvironment.GetRuntimeDirectory(), "regasm.exe");
-
+            var regasmArgs = string.Format("{0} /tlb:{1} /codebase", destination, tlb);
+            
             Console.WriteLine("Copying EID.Wrapper.dll to " + destination + "...");
             File.Copy("EID.Wrapper.dll", destination, true);
 
             Console.WriteLine("Registering EID.Wrapper.dll in " + destination + " as codebase and generating tlb with regasm...");
+            Console.WriteLine(regasm + " " + regasmArgs);
             Console.WriteLine("--------------------------------------------------------------------------------");
 
-            var info = new ProcessStartInfo(regasm, string.Format("{0} /tlb:{1} /codebase", destination, tlb));
+            var info = new ProcessStartInfo(regasm, regasmArgs);
             info.UseShellExecute = false;
             var proc = Process.Start(info);
             proc.WaitForExit();

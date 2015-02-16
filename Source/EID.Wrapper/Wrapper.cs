@@ -39,7 +39,7 @@ namespace EID.Wrapper
             try
             {
                 // Get the first slot (cardreader) with a token
-                //this is a very expensive call!
+                //this is a very expensive call, hence the ICardData-result object has properties indicating weather or not this call worked
                 Slot[] slotlist = m.GetSlotList(true);
                 if (slotlist.Length > 0)
                 {
@@ -92,11 +92,18 @@ namespace EID.Wrapper
                     result.StreetAndNumber = cardData["address_street_and_number"];
                     result.Surname = cardData["surname"];
                     result.ZipCode = cardData["address_zip"];
+
+                    result.CardStatus = CardStatus.Read;
                 }
                 else
                 {
-                    throw new Exception("No card found\n");
+                    result.CardStatus = CardStatus.NoCardFound;
                 }
+            }
+            catch(Exception ex)
+            {
+                result.CardStatus = CardStatus.Error;
+                result.Error = ex;
             }
             finally
             {

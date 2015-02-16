@@ -9,6 +9,15 @@ namespace EID.Wrapper
     [ComVisible(true)]
     public interface ICardData
     {
+        /// <summary>
+        /// Will return a result indication of a read on the card
+        /// </summary>
+        CardStatus CardStatus { get; }
+        /// <summary>
+        /// If the CardStatus returns Error, this field will contain the exception that was raised
+        /// </summary>
+        Exception Error { get; }
+
         string BirthDate { get; }
         string BirthPlace { get; }
         string FirstNames { get; }

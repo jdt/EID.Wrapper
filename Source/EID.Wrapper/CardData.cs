@@ -13,6 +13,14 @@ namespace EID.Wrapper
     [ProgId("EID.Wrapper")]
     public class CardData : ICardData
     {
+        public CardData()
+        {
+            CardStatus = CardStatus.None;
+        }
+
+        public CardStatus CardStatus { get; set; }
+        public Exception Error { get; set; }
+
         public string BirthDate { get; set; }
         public string BirthPlace { get; set; }
         public string FirstNames { get; set; }
