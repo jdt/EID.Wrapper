@@ -28,6 +28,8 @@ Set data = wrapper.GetCardData()
 MsgBox (data.Surname)
 ```
 
+The CardData object has a CardStatus property that can be used to check if the wrapper managed to read the card or not and an Error-property that will be set if the wrapper encountered an exception. See the [CardStatus](https://github.com/jdt/EID.Wrapper/blob/master/Source/EID.Wrapper/CardStatus.cs) enum for more information.
+
 ## Help
 
 ### I can't read any data
