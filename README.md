@@ -5,9 +5,11 @@ A COM Wrapper for the Belgian EID to allow legacy VBA to access the EID card dat
 This DLL depends on Framework 4.0 and will obviously need the EID Middleware installed on the system.
 
 ## Installation
-The files necessary for the wrapper can be found in the Release.zip-file. Download this file from the repository and perform the installation as outlined below to make the wrapper available on your system. After registering the DLL you may remove the downloaded files as the Register-utility will copy the necessary files to the system-directories.
+The files necessary for the wrapper can be found in the Release.zip-file. Download this file from the repository and perform the installation as outlined below to make the wrapper available on your system.
 
 The version of the DLL that needs to be installed depends on the version of Office used, NOT the OS. For users of a 32-bit Office, you need the x86 folder. If you are using a 64-bit Office, use the x64 folder. The wrapper provides a simple Register-utility that can be run as Administrator and performs the steps needed to get the wrapper DLL itself registered and recognized, after which it can be referenced from the Visual Basic For Applications-editor.
+
+After registering the DLL you may remove the downloaded files as the Register-utility will copy the necessary files to the system-directories.
 
 Remember that if you are using a 64-bit OS with a 32-bit version of Office you will STILL need the 32-bit DLL. 
 
@@ -17,18 +19,66 @@ from the Tools/References... screen, closing the screen and then re-adding it. I
 the reference has been re-added.
 
 ## Usage
-After installation a reference to EID_Wrapper is available from the Tools/References... dialog in the Visual Basic For Applications editor. The following code can then be used to fetch data from the EID-card.
 
+### Add the reference
+After installation a reference to EID_Wrapper is available from the Tools/References... dialog in the Visual Basic For Applications editor. You will then have access to the two main classes in the EID_Wrapper namespace: Wrapper and CardData. The wrapper contains a method GetCardData that will attempt to read data from the EID card and return a CardData-object with the result of the read operation.
+
+### Checking for the presence of a card in the cardreader
+The CardData-class contains a CardStatus field that will contain a status indication after the call to GetCardData. This can be used to determine if a card was found.
 ```
 Dim wrapper As New EID_Wrapper.Wrapper
 Dim data As EID_Wrapper.CardData
 
 Set data = wrapper.GetCardData()
-' Display the surname
-MsgBox (data.Surname)
+' The CardStatus field contains the information needed
+If data.CardStatus = CardStatus_NoCardFound Then
+    MsgBox ("No Card found!")
+End If
 ```
 
-The CardData object has a CardStatus property that can be used to check if the wrapper managed to read the card or not and an Error-property that will be set if the wrapper encountered an exception. See the [CardStatus](https://github.com/jdt/EID.Wrapper/blob/master/Source/EID.Wrapper/CardStatus.cs) enum for more information.
+### Reading data
+If the CardStatus field indicates the card was read, the values read from the card will be available in the CardData-class.
+```
+Dim wrapper As New EID_Wrapper.Wrapper
+Dim data As EID_Wrapper.CardData
+
+Set data = wrapper.GetCardData()
+' Check that card data was read correctly
+If data.CardStatus = CardStatus_Read Then
+	' Display the surname
+	MsgBox (data.Surname)
+End If
+```
+
+### Using the photograph on the EID
+The CardData-class contains both the raw data (as a byte array) for the photograph on the EID, as well as a utility method that can save the photo to a location on disk. The photo can then be retrieved from disk and displayed or used from your VBA code.
+```
+Dim wrapper As New EID_Wrapper.Wrapper
+Dim data As EID_Wrapper.CardData
+
+Set data = wrapper.GetCardData()
+' Check that card data was read correctly
+If data.CardStatus = CardStatus_Read Then
+	' Save the photo to the disk. Make sure this is a user-accessible directory!
+	data.SavePhoto ("C:\photo.jpg")
+	' Now display the picture in an imagebox
+	ImageBox.Picture = "C:\photo.jpg"
+End If
+```
+
+### Checking for exceptions
+If an exception occurs when reading a card, the CardStatus field will have its value set to Error to indicate an exception occurred. An Error-property will also be available containing the exception to help a developer debug the issue.
+```
+Dim wrapper As New EID_Wrapper.Wrapper
+Dim data As EID_Wrapper.CardData
+
+Set data = wrapper.GetCardData()
+' Check for exceptions
+If data.CardStatus = CardStatus_Error Then
+	' Notify the user
+	MsgBox ("An unexpected exception has occured: " + data.Error.Message)
+End If
+```
 
 ## Help
 
@@ -37,6 +87,9 @@ The wrapper provides an EID.Wrapper.Console-utility that can be used to verify i
 
 ### The data I need is not exposed!
 This is a quick-and-dirty project that only exposes the data I need to get an old application going with the new cards being issued. If you need additional data, open an issue or fork this project and send me a pull request and I'll see if I can get you the data you need.
+
+### I get exceptions when saving the photo to disk (for example, GDI+ exceptions)
+If you try to save the photo to an invalid location (directory does not exist, not enough permissions) you might see some odd exceptions pop up. Check this first to make sure you are not just having issues writing the file.
 
 ### I keep getting weird exceptions!
 A lot of weird exceptions can pop up when the version of the DLL and the version of Office (32-bit versus 64-bit) do not match. If you encounter any errors, make sure that you have installed the correct DLL (x86 for 32-bit Office or x64 for 64-bit Office). If you have recently updated the wrapper, make sure to follow the instructions outlined in the 'Updating'-section.
