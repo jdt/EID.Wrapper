@@ -22,7 +22,7 @@ namespace EID.Wrapper.Console
             System.Console.Write("Save photo to temp folder and display? [y]: ");
 
             var input = System.Console.ReadLine();
-            if (!string.IsNullOrEmpty(input))
+            if (string.IsNullOrEmpty(input) || input == "y")
             {
                 var photoPath = Path.GetTempFileName() + ".jpg";
                 data.SavePhoto(photoPath);
