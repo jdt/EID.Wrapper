@@ -28,5 +28,16 @@ namespace EID.Wrapper
         string StreetAndNumber { get; }
         string Surname { get; }
         string ZipCode { get; }
+
+        /// <summary>
+        /// The raw byte array of photo data on the card (jpg-image)
+        /// </summary>
+        byte[] PhotoData { get; }
+
+        /// <summary>
+        /// Saves the photo data to a file
+        /// </summary>
+        /// <param name="fileName">Full path of the file to save to</param>
+        void SavePhoto(string fileName);
     }
 }

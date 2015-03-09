@@ -50,7 +50,7 @@ namespace EID.Wrapper
 
                     Session session = slot.Token.OpenSession(true);
 
-                    IDictionary<string, string> cardData = new Dictionary<string, string>();
+                    IDictionary<string, byte[]> cardData = new Dictionary<string, byte[]>();
 
                     // "The label attribute of the objects should equal ..."
                     ByteArrayAttribute classAttribute = new ByteArrayAttribute(CKA.CLASS);
@@ -70,7 +70,7 @@ namespace EID.Wrapper
                         if (data.Value.Value != null)
                         {
                             var label = new string(data.Label.Value);
-                            var value = System.Text.Encoding.UTF8.GetString(data.Value.Value);
+                            var value = data.Value.Value;
 
                             if (!cardData.ContainsKey(label))
                                 cardData.Add(label, value);
@@ -82,17 +82,18 @@ namespace EID.Wrapper
 
                     session.FindObjectsFinal();
                     
-                    result.BirthDate = cardData["date_of_birth"];
-                    result.BirthPlace = cardData["location_of_birth"];
-                    result.FirstNames = cardData["firstnames"];
-                    result.Gender = cardData["gender"];
-                    result.Municipality = cardData["address_municipality"];
-                    result.Nationality = cardData["nationality"];
-                    result.NationalNumber = cardData["national_number"];
-                    result.StreetAndNumber = cardData["address_street_and_number"];
-                    result.Surname = cardData["surname"];
-                    result.ZipCode = cardData["address_zip"];
-
+                    result.BirthDate = Encoding.UTF8.GetString(cardData["date_of_birth"]);
+                    result.BirthPlace = Encoding.UTF8.GetString(cardData["location_of_birth"]);
+                    result.FirstNames = Encoding.UTF8.GetString(cardData["firstnames"]);
+                    result.Gender = Encoding.UTF8.GetString(cardData["gender"]);
+                    result.Municipality = Encoding.UTF8.GetString(cardData["address_municipality"]);
+                    result.Nationality = Encoding.UTF8.GetString(cardData["nationality"]);
+                    result.NationalNumber = Encoding.UTF8.GetString(cardData["national_number"]);
+                    result.StreetAndNumber = Encoding.UTF8.GetString(cardData["address_street_and_number"]);
+                    result.Surname = Encoding.UTF8.GetString(cardData["surname"]);
+                    result.ZipCode = Encoding.UTF8.GetString(cardData["address_zip"]);
+                    result.PhotoData = cardData["PHOTO_FILE"];
+                    
                     result.CardStatus = CardStatus.Read;
                 }
                 else

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -31,5 +33,16 @@ namespace EID.Wrapper
         public string StreetAndNumber { get; set; }
         public string Surname { get; set; }
         public string ZipCode { get; set; }
+
+        public byte[] PhotoData { get; set; }
+
+        public void SavePhoto(string fileName)
+        {
+            using (MemoryStream ms = new MemoryStream(PhotoData))
+            using (Image img = Image.FromStream(ms))
+            {
+                img.Save(fileName);
+            }
+        }
     }
 }
