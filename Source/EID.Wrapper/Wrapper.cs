@@ -92,6 +92,19 @@ namespace EID.Wrapper
                     result.StreetAndNumber = Encoding.UTF8.GetString(cardData["address_street_and_number"]);
                     result.Surname = Encoding.UTF8.GetString(cardData["surname"]);
                     result.ZipCode = Encoding.UTF8.GetString(cardData["address_zip"]);
+
+                    result.MemberOfFamily = Encoding.UTF8.GetString(cardData["member_of_family"]);
+                    result.SpecialOrganization = Encoding.UTF8.GetString(cardData["special_organization"]);
+                    result.Duplicata = Encoding.UTF8.GetString(cardData["duplicata"]);
+                    result.SpecialStatus = Encoding.UTF8.GetString(cardData["special_status"]);
+                    result.DocumentType = Encoding.UTF8.GetString(cardData["document_type"]);
+                    result.IssuingMunicipality = Encoding.UTF8.GetString(cardData["issuing_municipality"]);
+
+                    result.ValidityEndDate = Encoding.UTF8.GetString(cardData["validity_end_date"]);
+                    result.ValidityBeginDate = Encoding.UTF8.GetString(cardData["validity_begin_date"]);
+                    result.ChipNumber = Convert.ToBase64String(cardData["chip_number"]); //the docs don't specify this, but this is actually just an array of 16 bytes, so...
+                    result.CardNumber = Encoding.UTF8.GetString(cardData["card_number"]);
+                    
                     result.PhotoData = cardData["PHOTO_FILE"];
                     
                     result.CardStatus = CardStatus.Read;

@@ -33,6 +33,16 @@ namespace EID.Wrapper
         public string StreetAndNumber { get; set; }
         public string Surname { get; set; }
         public string ZipCode { get; set; }
+        public string MemberOfFamily { get; set; }
+        public string SpecialOrganization { get; set; }
+        public string Duplicata { get; set; }
+        public string SpecialStatus { get; set; }
+        public string DocumentType { get; set; }
+        public string IssuingMunicipality { get; set; }
+        public string ValidityEndDate { get; set; }
+        public string ValidityBeginDate { get; set; }
+        public string ChipNumber { get; set; }
+        public string CardNumber { get; set; }
 
         public byte[] PhotoData { get; set; }
 
