@@ -98,7 +98,9 @@ A lot of weird exceptions can pop up when the version of the DLL and the version
 This DLL has been tested on different combinations of OS and Office and always from clean installations (that is, apart from installing the .NET Framework version 4, the EID Middleware and the Java JRE to test the basic Viewer-applet). Despite my best efforts there can still be some problems. If you are well and truly stuck with a problem you are welcome to open an issue and we can see about working it out, but I can and will not make any guarantees that this DLL will work for you.
 
 ### What is the pkcs11 wrapper code doing here?
-This code is based on the examples provided by the EID Middleware authors. The pkcs11 code is compiled into this wrapper to reduce the complexities of dealing with assembly references in a COM-wrapper DLL so as to limit this wrapper to the single DLL. The sources for the pkcs11 wrapper are based on rev76, downloaded from http://sourceforge.net/projects/pkcs11net/ Changes were made according to the C# example readme on https://code.google.com/p/eid-mw/source/browse/trunk/sdk/Examples/CS/readme.txt?r=1188
+This code is based on the examples provided by the EID Middleware authors which uses the pkcs11-library. As outlined by the EID Middleware authors, some changes are needed to the code of this wrapper to make it work with the Belgian EID card. 
+
+The sources for the pkcs11 wrapper are based on rev76, downloaded from http://sourceforge.net/projects/pkcs11net/ Changes were made according to the C# example readme on https://code.google.com/p/eid-mw/source/browse/trunk/sdk/Examples/CS/readme.txt?r=1188
 
 These are the changes made according to the readme:
 
@@ -111,8 +113,14 @@ uint slotID
 
 4.2) A second change might also be needed to pkcs11net, as some of its pkcs11 structs do not have their alignment set to 1. We (beidpkcs11.dll) package the pkcs11 structs with 1-byte alignment, but the pkcs11net wrapper uses the default. How to change the alignment of the pkcs11net wrapper structs: e.g. for the CK_ATTRIBUTE struct: in CK_ATTRIBUTE.cs change [StructLayout(LayoutKind.Sequential,Charset.Unicode)] to [StructLayout(LayoutKind.Sequential,Charset.Unicode,Pack=1)]
 
-## Building
+The pkcs11 code is compiled into this wrapper instead of in a library alongside it to reduce the complexities of dealing with assembly references in a COM-wrapper DLL. Limiting the wrapper to a single DLL with everything built inside limits complexities for deployment.
+
+## For developers
+### What's with the Error and CardStatus? 
+Throwing exceptions from this wrapper is a bit...finicky. Consuming this in VBA might not always return the best available exception message and there are cases when a general VBA exception is thrown because of what is otherwise a very specific (and helpful) exception. So the wrapper simply 'eats up' the exception and puts them on the CardData object.
+
+### Creating a release
 In order to create a release, simply call the Build\Release.bat-script from a Visual Studio Command Prompt. 
 
-## A note for developers
+### A note on testing
 If you want to develop and test the wrapper, you might need to re-check the "Register for COM interop" in the Build-section of the EID.Wrapper project properties if you are doing Release builds. The regasm tool will generate the .tlb file needed on the client systems so a Release build from Visual Studio does not create and register the DLL.
