@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Security.Principal;
+using System.Linq;
 
 namespace EID.Wrapper.Register
 {
@@ -9,6 +10,18 @@ namespace EID.Wrapper.Register
     {
         static void Main(string[] args)
         {
+            var silent = false;
+            if (args.Count() > 0)
+            {
+                if (args[0] == "-s")
+                    silent = true;
+                else
+                {
+                    Console.WriteLine("Unsupported argument: " + args[0]);
+                    return;
+                }
+            }
+
             if(!HasAdministratorRights())
             {
                 Console.WriteLine("This tool needs administrator privileges to copy and register files. Please run this tool as Administrator");
@@ -41,8 +54,11 @@ namespace EID.Wrapper.Register
             else
                 Console.WriteLine("WARNING: The DLL was copied but regasm returned an unexpected return value. Check to make sure that the call to regasm succeeded.");
 
-            Console.WriteLine("Press any key to exit...");
-            Console.ReadKey();
+            if (!silent)
+            {
+                Console.WriteLine("Press any key to exit...");
+                Console.ReadKey();
+            }
         }
 
         private static bool HasAdministratorRights()

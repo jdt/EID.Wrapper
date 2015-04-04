@@ -2,16 +2,19 @@
 A COM Wrapper for the Belgian EID to allow legacy VBA to access the EID card data.
 
 ## Requirements
-This DLL depends on Framework 4.0 and will obviously need the EID Middleware installed on the system.
+This DLL depends on Framework 4.0 and will obviously need the EID Middleware installed on the system. The version of the DLL that needs to be installed depends on the version of Office used, NOT the OS. For users of a 32-bit Office, you need the x86 folder. If you are using a 64-bit Office, use the x64 folder. 
 
 ## Installation
-The files necessary for the wrapper can be found in the Release.zip-file. Download this file from the repository and perform the installation as outlined below to make the wrapper available on your system.
+The files necessary for the wrapper can be found in the Release.zip-file.
 
-The version of the DLL that needs to be installed depends on the version of Office used, NOT the OS. For users of a 32-bit Office, you need the x86 folder. If you are using a 64-bit Office, use the x64 folder. The wrapper provides a simple Register-utility that can be run as Administrator and performs the steps needed to get the wrapper DLL itself registered and recognized, after which it can be referenced from the Visual Basic For Applications-editor.
+The wrapper provides a simple Register-utility as part of the x86 or x64-folder that can be run as Administrator and performs the steps needed to get the wrapper DLL itself registered and recognized, after which it can be referenced from the Visual Basic For Applications-editor. The Register-utility will output the calls it makes and the resulting output so the result of the installation can be verified. (It relies on calls to system tools so the utility itself cannot make any guarantees as to the success of the installation)
 
 After registering the DLL you may remove the downloaded files as the Register-utility will copy the necessary files to the system-directories.
 
 Remember that if you are using a 64-bit OS with a 32-bit version of Office you will STILL need the 32-bit DLL. 
+
+### Silent (unattended) installations
+For unattended installations, the argument "-s" (without quotes) can be used so the utility closes itself after installation. Note that this prevents anybody from checking the result of the installation (see above).
 
 ## Updating
 If you want to register a new version, simply download it and call the Register-utility again. After that, remove and re-add the reference to the wrapper from the Visual Basic For Applications-editor by unchecking the reference 
