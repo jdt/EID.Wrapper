@@ -23,66 +23,73 @@ the reference has been re-added.
 
 ## Usage
 
-### Add the reference
-After installation a reference to EID_Wrapper is available from the Tools/References... dialog in the Visual Basic For Applications editor. You will then have access to the two main classes in the EID_Wrapper namespace: Wrapper and CardData. The wrapper contains a method GetCardData that will attempt to read data from the EID card and return a CardData-object with the result of the read operation.
+### Basic usage
+The wrapper contains a method GetCardData that will attempt to read data from all card slots on the system and return a CardData-object containing a list of Card-objects with the result of the read operation on each slot. Most systems will only have a single card slot and will therefore only return a single Card-object but the Wrapper was coded to handle multiple cards. A convenience property FirstCard is also available on the CardData-object that will contain the first valid card that was read.
 
-### Checking for the presence of a card in the cardreader
-The CardData-class contains a CardStatus field that will contain a status indication after the call to GetCardData. This can be used to determine if a card was found.
+### Add the reference
+After installation a reference to EID_Wrapper is available from the Tools/References... dialog in the Visual Basic For Applications editor. You will then have access to the main classes in the EID_Wrapper namespace: Wrapper, CardData and Card.
+
+### Checking for the presence of a valid card in the cardreader
 ```
 Dim wrapper As New EID_Wrapper.Wrapper
 Dim data As EID_Wrapper.CardData
 
 Set data = wrapper.GetCardData()
-' The CardStatus field contains the information needed
-If data.CardStatus = CardStatus_NoCardFound Then
-    MsgBox ("No Card found!")
+If data.FirstCard Is Nothing Then
+    MsgBox ("No valid card found!")
 End If
 ```
-
+Note that the FirstCard-property will only be available if the card was read successfully. If a card was placed in the reader but an error occurred while reading it, the FirstCard-property will not be set.
 ### Reading data
-If the CardStatus field indicates the card was read, the values read from the card will be available in the CardData-class.
 ```
 Dim wrapper As New EID_Wrapper.Wrapper
 Dim data As EID_Wrapper.CardData
 
 Set data = wrapper.GetCardData()
-' Check that card data was read correctly
-If data.CardStatus = CardStatus_Read Then
+If Not data.FirstCard Is Nothing Then
 	' Display the surname
-	MsgBox (data.Surname)
+	MsgBox (data.FirstCard.Surname)
 End If
 ```
 
 ### Using the photograph on the EID
-The CardData-class contains both the raw data (as a byte array) for the photograph on the EID, as well as a utility method that can save the photo to a location on disk. The photo can then be retrieved from disk and displayed or used from your VBA code.
+The Card-class contains both the raw data (as a byte array) for the photograph on the EID, as well as a utility method that can save the photo to a location on disk. The photo can then be retrieved from disk and displayed or used from your VBA code.
 ```
 Dim wrapper As New EID_Wrapper.Wrapper
 Dim data As EID_Wrapper.CardData
 
 Set data = wrapper.GetCardData()
-' Check that card data was read correctly
-If data.CardStatus = CardStatus_Read Then
+' Check that a card was read correctly
+If Not data.FirstCard Is Nothing Then
 	' Save the photo to the disk. Make sure this is a user-accessible directory!
-	data.SavePhoto ("C:\photo.jpg")
+	data.FirstCard.SavePhoto ("C:\photo.jpg")
 	' Now display the picture in an imagebox
 	ImageBox.Picture = "C:\photo.jpg"
 End If
 ```
 
 ### Checking for exceptions
-If an exception occurs when reading a card, the CardStatus field will have its value set to Error to indicate an exception occurred. An Error-property will also be available containing the exception to help a developer debug the issue.
+There are two places where exceptions can occur. In order to make debugging easy, the wrapper will try and catch any and all exceptions that occur and make them available on the CardData or Card, depending on where the exception occurred. It is most likely that the Card will contain an exception, reasons might include a non-EID card in the reader or a corrupted or unreadable card.
+
+If an exception occurs when trying to get the card slots on the system, the CardData-object will have its CardDataStatus-field set to Error and the Error property will contain the exception.
+
+If an exception occurs when reading a card, the CardStatus field on the Card will have its value set to Error to indicate an exception occurred. An Error-property will also be available containing the exception to help a developer debug the issue.
+
+### A note on dealing with multiple cardreaders
+The wrapper supports reading from and working with multiple concurrent cards. This is important for systems that contain different kinds of cards, such as systems outfitted with GPRS cards, as it is up to the developer using this wrapper to write the code to handle this situation. If multiple cards slots are present with different kinds of cards, the FirstCard property on CardData should give a reliable way of reading only the EID card and ignoring the other cards. 
+
+Should you choose to, multiple EID-cards can be read and the data accessed.
 ```
 Dim wrapper As New EID_Wrapper.Wrapper
 Dim data As EID_Wrapper.CardData
 
 Set data = wrapper.GetCardData()
-' Check for exceptions
-If data.CardStatus = CardStatus_Error Then
-	' Notify the user
-	MsgBox ("An unexpected exception has occured: " + data.Error.Message)
-End If
-```
 
+Dim crd As Variant
+For Each crd In data.cards
+	MsgBox (crd.FirstNames)
+Next
+```
 ## Help
 
 ### I can't read any data
