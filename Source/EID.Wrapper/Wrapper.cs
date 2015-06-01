@@ -54,6 +54,7 @@ namespace EID.Wrapper
                     foreach (var slot in slotlist)
                     {
                         var card = new Card();
+                        card.CardSlot = slot.SlotInfo.SlotDescription;
 
                         try
                         {

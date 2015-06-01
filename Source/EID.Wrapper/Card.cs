@@ -18,6 +18,8 @@ namespace EID.Wrapper
         public CardStatus CardStatus { get; set; }
         public Exception Error { get; set; }
 
+        public string CardSlot { get; set; }
+
         public string BirthDate { get; set; }
         public string BirthPlace { get; set; }
         public string FirstNames { get; set; }

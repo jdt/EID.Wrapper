@@ -14,6 +14,11 @@ namespace EID.Wrapper
         CardStatus CardStatus { get; }
         Exception Error { get; }
 
+        /// <summary>
+        /// Returns the name of the card slot the data represents
+        /// </summary>
+        string CardSlot { get; }
+
         string BirthDate { get; }
         string BirthPlace { get; }
         string FirstNames { get; }
