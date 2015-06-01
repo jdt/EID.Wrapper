@@ -88,12 +88,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Card.cs" />
     <Compile Include="CardData.cs" />
+    <Compile Include="CardDataStatus.cs" />
     <Compile Include="CardStatus.cs" />
     <Compile Include="EtokenExtensions\EtokenDelegates.cs" />
     <Compile Include="EtokenExtensions\EtokenDelegateUtil.cs" />
     <Compile Include="EtokenExtensions\EtokenModule.cs" />
     <Compile Include="EtokenExtensions\EtokenPkcs11Module.cs" />
+    <Compile Include="ICard.cs" />
     <Compile Include="ICardData.cs" />
     <Compile Include="IWrapper.cs" />
     <Compile Include="Pkcs11\Delegates\C_CloseAllSessions.cs" />

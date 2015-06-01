@@ -7,20 +7,20 @@ using System.Text;
 namespace EID.Wrapper
 {
     [ComVisible(true)]
-    [GuidAttribute("744b768f-62a4-4cd0-9f92-727658f55a9e")]
-    public enum CardStatus
+    [GuidAttribute("ab266039-c8f4-402a-bc50-b0824bccbf55")]
+    public enum CardDataStatus
     {
         /// <summary>
         /// No operation was performed
         /// </summary>
         None,
         /// <summary>
-        /// An exception occurred when trying to read card data
+        /// An exception occurred when trying to find cards to read
         /// </summary>
         Error,
         /// <summary>
-        /// A card was read and the data fetched
+        /// Any available card slots were read and data returned
         /// </summary>
-        Available
+        Ready
     }
 }

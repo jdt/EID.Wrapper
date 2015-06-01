@@ -31,99 +31,108 @@ namespace EID.Wrapper
 
         public ICardData GetCardData()
         {
-            var result = new CardData();
+            CardData result = new CardData();
 
-            var m = Module.GetInstance(mFileName);
-            // pkcs11 module init
-            //m.Initialize();
-            try
+            using(var m = Module.GetInstance(mFileName))
             {
-                // Get the first slot (cardreader) with a token
-                //this is a very expensive call, hence the ICardData-result object has properties indicating weather or not this call worked
-                Slot[] slotlist = m.GetSlotList(true);
-                if (slotlist.Length > 0)
+                Slot[] slotlist = null;
+                try
                 {
-                    Slot slot = slotlist[0];
+                    //get cardreaders with a token
+                    //this is a very expensive call, hence the ICardData-result object has properties indicating weather or not this call worked
+                    slotlist = m.GetSlotList(true);
+                    result.CardDataStatus = CardDataStatus.Ready;
+                }
+                catch(Exception ex)
+                {
+                    result.CardDataStatus = CardDataStatus.Error;
+                    result.Error = ex;
+                }
 
-                    // Search for objects
-                    // First, define a search template
-
-                    Session session = slot.Token.OpenSession(true);
-
-                    IDictionary<string, byte[]> cardData = new Dictionary<string, byte[]>();
-
-                    // "The label attribute of the objects should equal ..."
-                    ByteArrayAttribute classAttribute = new ByteArrayAttribute(CKA.CLASS);
-                    classAttribute.Value = BitConverter.GetBytes((uint)Net.Sf.Pkcs11.Wrapper.CKO.DATA);
-                    
-                    session.FindObjectsInit(new P11Attribute[] { classAttribute });
-
-                    P11Object[] foundObjects = session.FindObjects(50);
-                    int counter = foundObjects.Length;
-                    Data data;
-                    while (counter > 0)
+                if(slotlist != null)
+                {
+                    foreach (var slot in slotlist)
                     {
-                        //foundObjects[counter-1].ReadAttributes(session);
-                        //public static BooleanAttribute ReadAttribute(Session session, uint hObj, BooleanAttribute attr)
-                        data = foundObjects[counter - 1] as Data;
-                        //label = data.Label.ToString();
-                        if (data.Value.Value != null)
+                        var card = new Card();
+
+                        try
                         {
-                            var label = new string(data.Label.Value);
-                            var value = data.Value.Value;
+                            // Search for objects
+                            // First, define a search template
 
-                            if (!cardData.ContainsKey(label))
-                                cardData.Add(label, value);
-                            else
-                                cardData[label] = value;
+                            Session session = slot.Token.OpenSession(true);
+
+                            IDictionary<string, byte[]> cardData = new Dictionary<string, byte[]>();
+
+                            // "The label attribute of the objects should equal ..."
+                            ByteArrayAttribute classAttribute = new ByteArrayAttribute(CKA.CLASS);
+                            classAttribute.Value = BitConverter.GetBytes((uint)Net.Sf.Pkcs11.Wrapper.CKO.DATA);
+
+                            session.FindObjectsInit(new P11Attribute[] { classAttribute });
+
+                            P11Object[] foundObjects = session.FindObjects(50);
+                            int counter = foundObjects.Length;
+                            Data data;
+                            while (counter > 0)
+                            {
+                                //foundObjects[counter-1].ReadAttributes(session);
+                                //public static BooleanAttribute ReadAttribute(Session session, uint hObj, BooleanAttribute attr)
+                                data = foundObjects[counter - 1] as Data;
+                                //label = data.Label.ToString();
+                                if (data.Value.Value != null)
+                                {
+                                    var label = new string(data.Label.Value);
+                                    var value = data.Value.Value;
+
+                                    if (!cardData.ContainsKey(label))
+                                        cardData.Add(label, value);
+                                    else
+                                        cardData[label] = value;
+                                }
+                                counter--;
+                            }
+
+                            session.FindObjectsFinal();
+
+
+                            card.BirthDate = Encoding.UTF8.GetString(cardData["date_of_birth"]);
+                            card.BirthPlace = Encoding.UTF8.GetString(cardData["location_of_birth"]);
+                            card.FirstNames = Encoding.UTF8.GetString(cardData["firstnames"]);
+                            card.Gender = Encoding.UTF8.GetString(cardData["gender"]);
+                            card.Municipality = Encoding.UTF8.GetString(cardData["address_municipality"]);
+                            card.Nationality = Encoding.UTF8.GetString(cardData["nationality"]);
+                            card.NationalNumber = Encoding.UTF8.GetString(cardData["national_number"]);
+                            card.StreetAndNumber = Encoding.UTF8.GetString(cardData["address_street_and_number"]);
+                            card.Surname = Encoding.UTF8.GetString(cardData["surname"]);
+                            card.ZipCode = Encoding.UTF8.GetString(cardData["address_zip"]);
+                            
+                            card.MemberOfFamily = Encoding.UTF8.GetString(cardData["member_of_family"]);
+                            card.SpecialOrganization = Encoding.UTF8.GetString(cardData["special_organization"]);
+                            card.Duplicata = Encoding.UTF8.GetString(cardData["duplicata"]);
+                            card.SpecialStatus = Encoding.UTF8.GetString(cardData["special_status"]);
+                            card.DocumentType = Encoding.UTF8.GetString(cardData["document_type"]);
+                            card.IssuingMunicipality = Encoding.UTF8.GetString(cardData["issuing_municipality"]);
+                            
+                            card.ValidityEndDate = Encoding.UTF8.GetString(cardData["validity_end_date"]);
+                            card.ValidityBeginDate = Encoding.UTF8.GetString(cardData["validity_begin_date"]);
+                            card.ChipNumber = Convert.ToBase64String(cardData["chip_number"]); //the docs don't specify this, but this is actually just an array of 16 bytes, so...
+                            card.CardNumber = Encoding.UTF8.GetString(cardData["card_number"]);
+                            
+                            card.PhotoData = cardData["PHOTO_FILE"];
+
+                            card.CardStatus = CardStatus.Available;
                         }
-                        counter--;
+                        catch (Exception ex)
+                        {
+                            card.CardStatus = CardStatus.Error;
+                            card.Error = ex;
+                        }
+
+                        result.AddCard(card);
                     }
-
-                    session.FindObjectsFinal();
-                    
-                    result.BirthDate = Encoding.UTF8.GetString(cardData["date_of_birth"]);
-                    result.BirthPlace = Encoding.UTF8.GetString(cardData["location_of_birth"]);
-                    result.FirstNames = Encoding.UTF8.GetString(cardData["firstnames"]);
-                    result.Gender = Encoding.UTF8.GetString(cardData["gender"]);
-                    result.Municipality = Encoding.UTF8.GetString(cardData["address_municipality"]);
-                    result.Nationality = Encoding.UTF8.GetString(cardData["nationality"]);
-                    result.NationalNumber = Encoding.UTF8.GetString(cardData["national_number"]);
-                    result.StreetAndNumber = Encoding.UTF8.GetString(cardData["address_street_and_number"]);
-                    result.Surname = Encoding.UTF8.GetString(cardData["surname"]);
-                    result.ZipCode = Encoding.UTF8.GetString(cardData["address_zip"]);
-
-                    result.MemberOfFamily = Encoding.UTF8.GetString(cardData["member_of_family"]);
-                    result.SpecialOrganization = Encoding.UTF8.GetString(cardData["special_organization"]);
-                    result.Duplicata = Encoding.UTF8.GetString(cardData["duplicata"]);
-                    result.SpecialStatus = Encoding.UTF8.GetString(cardData["special_status"]);
-                    result.DocumentType = Encoding.UTF8.GetString(cardData["document_type"]);
-                    result.IssuingMunicipality = Encoding.UTF8.GetString(cardData["issuing_municipality"]);
-
-                    result.ValidityEndDate = Encoding.UTF8.GetString(cardData["validity_end_date"]);
-                    result.ValidityBeginDate = Encoding.UTF8.GetString(cardData["validity_begin_date"]);
-                    result.ChipNumber = Convert.ToBase64String(cardData["chip_number"]); //the docs don't specify this, but this is actually just an array of 16 bytes, so...
-                    result.CardNumber = Encoding.UTF8.GetString(cardData["card_number"]);
-                    
-                    result.PhotoData = cardData["PHOTO_FILE"];
-                    
-                    result.CardStatus = CardStatus.Read;
-                }
-                else
-                {
-                    result.CardStatus = CardStatus.NoCardFound;
                 }
             }
-            catch(Exception ex)
-            {
-                result.CardStatus = CardStatus.Error;
-                result.Error = ex;
-            }
-            finally
-            {
-                // pkcs11 finalize
-                m.Dispose();//m.Finalize_();
-            }
+
             return result;
         }
     }
