@@ -18,8 +18,15 @@ namespace EID.Wrapper
         /// </summary>
         Exception Error { get; }
         /// <summary>
-        /// A list containing data from every card read
+        /// Contains the ICard information from the first card to be read successfully
         /// </summary>
-        ICard[] Cards { get; }
+        ICard FirstCard { get; }
+        /// <summary>
+        /// An array containing data from every card read
+        /// </summary>
+        /// <remark>
+        /// Actually ICard[], but VBA can't read arrays this way
+        /// </remark>
+        object Cards { get; }
     }
 }

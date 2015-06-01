@@ -33,7 +33,15 @@ namespace EID.Wrapper
         public CardDataStatus CardDataStatus { get; set; }
         public Exception Error { get; set; }
 
-        public ICard[] Cards
+        public ICard FirstCard
+        {
+            get
+            {
+                return _cards.FirstOrDefault(x => x.CardStatus == CardStatus.Available);
+            }
+        }
+
+        public object Cards
         {
             get
             {

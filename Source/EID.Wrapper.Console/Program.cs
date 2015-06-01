@@ -16,9 +16,9 @@ namespace EID.Wrapper.Console
 
             ListProperties(data);
 
-            for (int i = 0; i < data.Cards.Count(); i++ )
+            for (int i = 0; i < (data.Cards as ICard[]).Count(); i++ )
             {
-                var card = data.Cards.ElementAt(i);
+                var card = (data.Cards as ICard[]).ElementAt(i);
                 System.Console.WriteLine("--------Kaart " + i + "--------");
                 ListProperties(card);
 
