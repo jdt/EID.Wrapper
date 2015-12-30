@@ -123,7 +123,7 @@ namespace EID.Wrapper
                 }
                 catch (Exception ex)
                 {
-                    _warnings.Add(string.Format("Exception occurred trying to convert '{0}' to an UTF8 string: '{1}'", key, ex.Message));
+                    _warnings.Add(string.Format("Exception occurred trying to convert '{0}' to a Base64 string: '{1}'", key, ex.Message));
                 }
             }
 
