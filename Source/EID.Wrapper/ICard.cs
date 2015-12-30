@@ -13,6 +13,11 @@ namespace EID.Wrapper
     {
         CardStatus CardStatus { get; }
         Exception Error { get; }
+        /// <summary>
+        /// An array containing a list of warnings that occurred when reading data from the card. If an error occurs during the parsing of data, the field will be set to
+        /// string.empty and a warning will be set
+        /// </summary>
+        string[] Warnings { get; }
 
         /// <summary>
         /// Returns the name of the card slot the data represents

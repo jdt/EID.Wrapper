@@ -20,7 +20,7 @@ namespace EID.Wrapper
 
         public CardStatus CardStatus { get; set; }
         public Exception Error { get; set; }
-        public IEnumerable<String> Warnings { get { return _warnings; } }
+        public string[] Warnings { get { return _warnings.ToArray(); } }
 
         public string CardSlot { get; set; }
 
