@@ -86,39 +86,45 @@ namespace EID.Wrapper
         
         private string TryGetUTF8(IDictionary<string, byte[]> data, string key)
         {
+            var stringData = string.Empty;
+
             if (!data.ContainsKey(key))
             {
                 _warnings.Add(string.Format("Data for '{0}' not found", key));
             }
-
-            var stringData = string.Empty;
-            try
+            else
             {
-                stringData = Encoding.UTF8.GetString(data[key]);
-            }
-            catch (Exception ex)
-            {
-                _warnings.Add(string.Format("Exception occurred trying to convert '{0}' to an UTF8 string: '{1}'", key, ex.Message));
-            }
+                try
+                {
+                    stringData = Encoding.UTF8.GetString(data[key]);
+                }
+                catch (Exception ex)
+                {
+                    _warnings.Add(string.Format("Exception occurred trying to convert '{0}' to an UTF8 string: '{1}'", key, ex.Message));
+                }
 
+            }
             return stringData;
         }
 
         private string TryGetBase64String(IDictionary<string, byte[]> data, string key)
         {
+            var stringData = string.Empty;
+
             if (!data.ContainsKey(key))
             {
                 _warnings.Add(string.Format("Data for '{0}' not found", key));
             }
-
-            var stringData = string.Empty;
-            try
+            else
             {
-                stringData = Convert.ToBase64String(data[key]);
-            }
-            catch (Exception ex)
-            {
-                _warnings.Add(string.Format("Exception occurred trying to convert '{0}' to an UTF8 string: '{1}'", key, ex.Message));
+                try
+                {
+                    stringData = Convert.ToBase64String(data[key]);
+                }
+                catch (Exception ex)
+                {
+                    _warnings.Add(string.Format("Exception occurred trying to convert '{0}' to an UTF8 string: '{1}'", key, ex.Message));
+                }
             }
 
             return stringData;
