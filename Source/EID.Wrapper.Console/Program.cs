@@ -19,7 +19,7 @@ namespace EID.Wrapper.Console
             for (int i = 0; i < (data.Cards as ICard[]).Count(); i++ )
             {
                 var card = (data.Cards as ICard[]).ElementAt(i);
-                System.Console.WriteLine("--------Kaart " + i + "--------");
+                System.Console.WriteLine("--------Card " + i + "--------");
                 ListProperties(card);
 
                 if(card.CardStatus == CardStatus.Available)
