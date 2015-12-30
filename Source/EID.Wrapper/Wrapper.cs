@@ -82,7 +82,7 @@ namespace EID.Wrapper
                                 //label = data.Label.ToString();
                                 if (data.Value.Value != null)
                                 {
-                                    var label = new string(data.Label.Value);
+                                    var label = new string(data.Label.Value).ToLower();
                                     var value = data.Value.Value;
 
                                     if (!cardData.ContainsKey(label))
@@ -95,32 +95,7 @@ namespace EID.Wrapper
 
                             session.FindObjectsFinal();
 
-
-                            card.BirthDate = Encoding.UTF8.GetString(cardData["date_of_birth"]);
-                            card.BirthPlace = Encoding.UTF8.GetString(cardData["location_of_birth"]);
-                            card.FirstNames = Encoding.UTF8.GetString(cardData["firstnames"]);
-                            card.Gender = Encoding.UTF8.GetString(cardData["gender"]);
-                            card.Municipality = Encoding.UTF8.GetString(cardData["address_municipality"]);
-                            card.Nationality = Encoding.UTF8.GetString(cardData["nationality"]);
-                            card.NationalNumber = Encoding.UTF8.GetString(cardData["national_number"]);
-                            card.StreetAndNumber = Encoding.UTF8.GetString(cardData["address_street_and_number"]);
-                            card.Surname = Encoding.UTF8.GetString(cardData["surname"]);
-                            card.ZipCode = Encoding.UTF8.GetString(cardData["address_zip"]);
-                            
-                            card.MemberOfFamily = Encoding.UTF8.GetString(cardData["member_of_family"]);
-                            card.SpecialOrganization = Encoding.UTF8.GetString(cardData["special_organization"]);
-                            card.Duplicata = Encoding.UTF8.GetString(cardData["duplicata"]);
-                            card.SpecialStatus = Encoding.UTF8.GetString(cardData["special_status"]);
-                            card.DocumentType = Encoding.UTF8.GetString(cardData["document_type"]);
-                            card.IssuingMunicipality = Encoding.UTF8.GetString(cardData["issuing_municipality"]);
-                            
-                            card.ValidityEndDate = Encoding.UTF8.GetString(cardData["validity_end_date"]);
-                            card.ValidityBeginDate = Encoding.UTF8.GetString(cardData["validity_begin_date"]);
-                            card.ChipNumber = Convert.ToBase64String(cardData["chip_number"]); //the docs don't specify this, but this is actually just an array of 16 bytes, so...
-                            card.CardNumber = Encoding.UTF8.GetString(cardData["card_number"]);
-                            
-                            card.PhotoData = cardData["PHOTO_FILE"];
-
+                            card.ReadDataFrom(cardData);
                             card.CardStatus = CardStatus.Available;
                         }
                         catch (Exception ex)
