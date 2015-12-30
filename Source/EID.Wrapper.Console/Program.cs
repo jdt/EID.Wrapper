@@ -47,7 +47,19 @@ namespace EID.Wrapper.Console
         {
             foreach (var prop in obj.GetType().GetProperties())
             {
-                System.Console.WriteLine("{0}={1}", prop.Name, prop.GetValue(obj, null));
+                var dataAsList = prop.GetValue(obj, null) as string[];
+                if(dataAsList != null)
+                {
+                    System.Console.WriteLine("{0}=", prop.Name);
+                    foreach(var line in dataAsList)
+                    {
+                        System.Console.WriteLine("  - {0}", line);
+                    }
+                }
+                else 
+                {
+                    System.Console.WriteLine("{0}={1}", prop.Name, prop.GetValue(obj, null));
+                }
             }
         }
     }
